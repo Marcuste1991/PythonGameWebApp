@@ -1,11 +1,12 @@
 from flask import Flask, flash, redirect, render_template, request, session, abort
 from random import randint
+import datetime
 
 app = Flask(__name__)
 
 # index -> main site view
 @app.route("/")
-def index():
+def main():
     return render_template('index.html')
 
 # home -> news and picture overview
@@ -19,8 +20,9 @@ def about():
     return render_template('about.html')
 
 if __name__ == "__main__":
+    app.config['DEBUG'] = True
     ### for local testing uncomment first app.run and comment the other
-    # app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80)
 
     ### for deployment uncomment second app.run and comment the other
-    app.run(host='0.0.0.0')
+    # app.run(host='0.0.0.0')
