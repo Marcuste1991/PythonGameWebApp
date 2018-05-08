@@ -19,6 +19,11 @@ def home():
 def about():
     return render_template('about.html')
 
+# contact -> displayed contact information to support and developers
+@app.route('/contact/')
+def contact():
+    return render_template('contact.html')
+
 if __name__ == "__main__":
     app.config['DEBUG'] = True
     ### for local testing uncomment first app.run and comment the other
