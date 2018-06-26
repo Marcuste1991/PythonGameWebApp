@@ -1,0 +1,10 @@
+# ignore all logs
+*.logs
+
+# ignore some folders of working directory
+_linux/
+codestyles/
+.idea/
+
+# ignore xml
+*.xml
