@@ -1,12 +1,13 @@
 # packet import section
 
 import random
+import time
 
 import pygame as pg
+# defined import section
 from config import *
 from map import collide_hit_rect
 from sprites.Bullet import *
-# defined import section
 from sprites.Player import *
 
 # definition section
@@ -14,24 +15,15 @@ vec = pg.math.Vector2
 pg.mixer.pre_init(44100, 16, 2, 4096)
 
 
-def movement(self):
-    # 0 -> w, 1 -> a, 2 -> s, 3 -> d
-    # 4 -> w + d, 5 -> w + a, 6 -> s + d, 7 -> s + a
-    move = (random.randint(0, 20000) % 7)
-    return move
+def movement():
+    while True:
+        time.sleep(5)
+        move = (random.randint(0, 20000) % 7)
+        return move
 
 
-def make_move(move, vel, dir):
-    if move == '':
-        new_move = movement(move)
-        init = (1, 1)
-        move = new_move
-    elif Enemy.movement_collision(vel, dir):
-        new_move = movement(move)
-        move = new_move
-    else:
-        move = move
-
+def make_move(self):
+    move = movement()
     return move
 
 
@@ -42,6 +34,7 @@ class Enemy(pg.sprite.Sprite):
         self.game = game
         self.image = game.enemy_img
         self.rect = self.image.get_rect()
+        self.rect_col = self.image.get_rect()
         self.hit_rect = ENEMY_HIT_RECT
         self.hit_rect.center = self.rect.center
         self.pos = vec(x, y) * TILESIZE
@@ -117,7 +110,6 @@ class Enemy(pg.sprite.Sprite):
     def update(self):
         self.hit_by_player()
         self.walk_through_map()
-        self.rect.center = self.pos
 
         self.image = pg.transform.rotate(self.game.enemy_img, self.img_rot + self.rot)
         self.rect = self.image.get_rect()
@@ -140,7 +132,7 @@ class Enemy(pg.sprite.Sprite):
                 if self.vel.x < 0:
                     self.pos.x = E_hits[0].rect.right + self.hit_rect.width / 2.0
                 self.vel.x = 0
-                self.hit_rect.centerx = self.pos.x
+                self.rect_col.centerx = self.pos.x
                 return True
             else:
                 return False
@@ -152,7 +144,7 @@ class Enemy(pg.sprite.Sprite):
                 if self.vel.y < 0:
                     self.pos.y = E_hits[0].rect.bottom + self.hit_rect.height / 2.0
                 self.vel.y = 0
-                self.hit_rect.centery = self.pos.y
+                self.rect_col.centery = self.pos.y
                 return True
             else:
                 return False
@@ -160,71 +152,72 @@ class Enemy(pg.sprite.Sprite):
     def movement_collision_Handler(self):
 
         if self.movement_collision('x'):
-            collision = 'x'
+            collision = True
         elif self.movement_collision('y'):
-            collision = 'y'
+            collision = True
         else:
-            collision = ''
+            collision = False
 
         return collision
 
     def walk_through_map(self):
         global moveNum
-        moveNum = ''
+        global collision
+        collision = False
+        moveNum = 0
         # enemy should avoid to hit walls and needs to be able to hunt player
         # only possible for actual map atm
         init = vec(0, 0)
         self.vel = init
         EnNum = 1
         maxRange = self.num
-        collision = ''
 
         for EnNum in range(maxRange):
             EnNum += 1
-            if not self.movement_collision(moveNum):
+            if not collision:
                 if moveNum == '':
-                    moveNum = make_move(moveNum, self.vel, collision)
+                    moveNum = make_move(moveNum)
                 elif not self.movement_collision(moveNum):
                     moveNum = moveNum
                 else:
-                    moveNum = make_move(moveNum, self.vel, collision)
+                    moveNum = make_move(moveNum)
 
                 # 0 -> w, 1 -> a, 2 -> s, 3 -> d
                 # 4 -> w + d, 5 -> w + a, 6 -> s + d, 7 -> s + a
                 while moveNum == 4:
                     self.vel = vec(ENEMY_SPEED, -ENEMY_SPEED) * 0.773
                     self.rot = 90
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
                 while moveNum == 5:
                     self.vel = vec(-ENEMY_SPEED, -ENEMY_SPEED) * 0.773
                     self.rot = 90
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
                 while moveNum == 6:
                     self.vel = vec(ENEMY_SPEED, ENEMY_SPEED) * 0.773
                     self.rot = -90
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
                 while moveNum == 7:
                     self.vel = vec(-ENEMY_SPEED, ENEMY_SPEED) * 0.773
                     self.rot = -90
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
                 while moveNum == 0:
                     self.vel = vec(0, -ENEMY_SPEED)
                     self.rot = 90
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
                 while moveNum == 1:
                     self.vel = vec(0, ENEMY_SPEED)
                     self.rot = 180
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
                 while moveNum == 2:
                     self.vel = vec(-ENEMY_SPEED, 0)
                     self.rot = 0
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
                 while moveNum == 3:
                     self.vel = vec(ENEMY_SPEED, 0)
                     self.rot = -90
-                    self.movement_collision_Handler()
+                    collision = self.movement_collision_Handler()
             else:
-                moveNum = make_move(moveNum, self.vel, collision)
+                moveNum = make_move(moveNum)
 
     def distance_to_player(self):
         # effective distance with ignoring walls
