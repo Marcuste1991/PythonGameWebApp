@@ -1,25 +1,22 @@
 # import section
 import sys
 from os import path
-from map import *
 
-# redefined file structure
-# !!!! das sprite file war zu groß und unübersichtlich deswegen hab ich es aufgeteilt !!!!
-from sprites.ControlBox import *
-from sprites.Gate import *
-from sprites.Background import *
-from sprites.Tree import *
-from sprites.ActionArea import *
-from sprites.WoodBox import *
-from sprites.Wall import *
-from sprites.Bullet import *
-from sprites.Player import *
-from sprites.Enemy import *
 import pygame as pg
-
 from config import *
-import math
 from map import *
+from map import *
+from sprites.ActionArea import *
+from sprites.Background import *
+from sprites.Bullet import *
+# redefined file structure
+from sprites.ControlBox import *
+from sprites.Enemy import *
+from sprites.Gate import *
+from sprites.Player import *
+from sprites.Tree import *
+from sprites.Wall import *
+from sprites.WoodBox import *
 
 pg.mixer.pre_init(44100, 16, 2, 4096)
 
@@ -28,7 +25,7 @@ class Game:
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.display.set_caption(TITLE, VERSION)
+        pg.display.set_caption(TITLE + " | Version: " + VERSION)
         self.clock = pg.time.Clock()
         self.load_data()
 
@@ -41,7 +38,6 @@ class Game:
         self.player_img = pg.transform.scale(self.player_img, PLAYER_IMG_SIZE)
         self.enemy_img = pg.image.load(path.join(self.img_folder, ENEMY_IMG)).convert_alpha()
         self.enemy_img = pg.transform.scale(self.enemy_img, ENEMY_IMG_SIZE)
-
         # load background fx
 
     def initialize(self):
@@ -55,10 +51,10 @@ class Game:
         self.bullets = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.background = []
-        for y in range(0,2500,BACKGROUND_IMG_SIZE[1]):
-            for x in range(0,5000,BACKGROUND_IMG_SIZE[0]):
+        for y in range(0, 2500, BACKGROUND_IMG_SIZE[1]):
+            for x in range(0, 5000, BACKGROUND_IMG_SIZE[0]):
                 self.background.append(Background(self, self.img_folder + "/" + BACKGROUND_IMG, [x, y]))
-        #self.background = Background(self, self.img_folder + "/" + BACKGROUND_IMG, [0,0])
+        # self.background = Background(self, self.img_folder + "/" + BACKGROUND_IMG, [0,0])
         self.camera = Camera(self.map.width, self.map.height)
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
@@ -69,9 +65,9 @@ class Game:
                 if tile == 'W':
                     self.woodbox = WoodBox(self, col, row)
                 if tile == 'T':
-                    self.tree = Tree(self,col,row)
+                    self.tree = Tree(self, col, row)
                 if tile == 'G':
-                    self.gate = Gate(self,col,row)
+                    self.gate = Gate(self, col, row)
                 if tile == 'A':
                     self.a_area = ActionArea(self, col, row)
                 if tile == 'C':
@@ -113,7 +109,7 @@ class Game:
 
     def draw(self):
         self.screen.fill(BGCOLOR)
-        #self.screen.blit(self.background.image, self.background.rect)
+        # self.screen.blit(self.background.image, self.background.rect)
         self.draw_grid()
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
@@ -137,9 +133,8 @@ class Game:
             if event.type == pg.QUIT:
                 pg.quit()
                 quit()
-                
-        self.screen.fill(WHITE)
 
+        self.screen.fill(WHITE)
 
     def show_go_screen(self):
         pass
