@@ -12,6 +12,7 @@ import math
 vec = pg.math.Vector2
 pg.mixer.pre_init(44100, 16, 2, 4096)
 
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y, camera):
         self.groups = game.all_sprites
@@ -71,7 +72,6 @@ class Player(pg.sprite.Sprite):
         else:
             self.stop_walking()
 
-
     def collide_with_walls(self, dir):
         if dir == 'x':
             hits = pg.sprite.spritecollide(self, self.game.walls, False, collide_hit_rect)
@@ -119,7 +119,7 @@ class Player(pg.sprite.Sprite):
                 self.game.player_dead = True
                 self.game.enemy.player_kills += 1
                 print("Got killed by bots. ---> Game Over!")
-                #self.game.quit()
+                # self.game.quit()
 
     def update(self):
         self.get_keys()
@@ -138,6 +138,8 @@ class Player(pg.sprite.Sprite):
         self.hit_rect.centery = self.pos.y
         self.collide_with_walls('y')
         self.rect.center = self.hit_rect.center
+        self.game.a_area.life_text(self.hp)
+        self.game.enemy.on_objective_keypressed()
         # print("playerpos:" + str(self.pos[0]) + " " + str(self.pos[1]) +"   mousepos:" + str("(" + str(self.mousex) + "," + str(self.mousey) + ")") + "  camerapos: " + str(self.camera.camera.topleft))
 
     def debuggerPlayer(self):

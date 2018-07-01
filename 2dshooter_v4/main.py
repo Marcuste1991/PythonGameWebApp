@@ -1,14 +1,18 @@
 # import section
-import sys
+import sys, datetime, time
 from os import path
-from map import *
-import time
 
-# redefined file structure
-# !!!! das sprite file war zu groß und unübersichtlich deswegen hab ich es aufgeteilt !!!!
-from sprites.ControlBox import *
-from sprites.Gate import *
+import pygame as pg
+from config import *
+from map import *
+from sprites.ActionArea import *
 from sprites.Background import *
+from sprites.Bullet import *
+# redefined file structure
+from sprites.ControlBox import *
+from sprites.Enemy import *
+from sprites.Gate import *
+from sprites.Player import *
 from sprites.Tree import *
 from sprites.ActionArea import *
 from sprites.WoodBox import *
@@ -30,9 +34,10 @@ class Game:
         pg.init()
         pg.font.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.display.set_caption(TITLE, VERSION)
+        pg.display.set_caption(TITLE + " | Version: " + VERSION)
         self.clock = pg.time.Clock()
         self.load_data()
+        self.Time_start = datetime.datetime.now()
 
     def load_data(self):
         game_folder = path.dirname(__file__)
@@ -47,8 +52,8 @@ class Game:
         # load background fx
 
     def generate_background(self):
-        for y in range(0,2500,BACKGROUND_IMG_SIZE[1]):
-            for x in range(0,5000,BACKGROUND_IMG_SIZE[0]):
+        for y in range(0, 2500, BACKGROUND_IMG_SIZE[1]):
+            for x in range(0, 5000, BACKGROUND_IMG_SIZE[0]):
                 self.background.append(Background(self, self.img_folder + "/" + BACKGROUND_IMG, [x, y]))
 
     def initialize(self):
@@ -63,6 +68,10 @@ class Game:
         self.enemy_bullets = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.background = []
+        # for y in range(0, 2500, BACKGROUND_IMG_SIZE[1]):
+        #     for x in range(0, 5000, BACKGROUND_IMG_SIZE[0]):
+        #         self.background.append(Background(self, self.img_folder + "/" + BACKGROUND_IMG, [x, y]))
+        # self.background = Background(self, self.img_folder + "/" + BACKGROUND_IMG, [0,0])
         self.player_dead = False
         self.camera = Camera(self.map.width, self.map.height)
         for row, tiles in enumerate(self.map.data):
@@ -74,9 +83,9 @@ class Game:
                 if tile == 'W':
                     self.woodbox = WoodBox(self, col, row)
                 if tile == 'T':
-                    self.tree = Tree(self,col,row)
+                    self.tree = Tree(self, col, row)
                 if tile == 'G':
-                    self.gate = Gate(self,col,row)
+                    self.gate = Gate(self, col, row)
                 if tile == 'A':
                     self.a_area = ActionArea(self, col, row)
                 if tile == 'C':
@@ -100,7 +109,7 @@ class Game:
             self.update()
             self.draw()
 
-            #measure time played
+            # measure time played
             self.playtime_tick = self.playtime_clock.tick()
             self.time_played += self.playtime_tick
             if self.player_dead == True:
@@ -128,7 +137,7 @@ class Game:
 
     def draw(self):
         self.screen.fill(BGCOLOR)
-        #self.screen.blit(self.background.image, self.background.rect)
+        # self.screen.blit(self.background.image, self.background.rect)
         self.draw_grid()
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
@@ -152,17 +161,15 @@ class Game:
             if event.type == pg.QUIT:
                 pg.quit()
                 quit()
-                
-        self.screen.fill(WHITE)
 
+        self.screen.fill(WHITE)
 
     def show_go_screen(self):
         myfont = pg.font.SysFont('Comic Sans MS', 30)
         textsurface = myfont.render('Game Over', False, (0, 0, 0))
-        self.screen.blit(textsurface,(0,0))
+        self.screen.blit(textsurface, (0, 0))
         print("Playtime: " + str(self.time_played / 1000) + " seconds")
         time.sleep(5)
-
 
 
 # create the game object
