@@ -117,6 +117,8 @@ class Player(pg.sprite.Sprite):
         self.hit_rect.centery = self.pos.y
         self.collide_with_walls('y')
         self.rect.center = self.hit_rect.center
+        self.game.a_area.life_text(self.hp)
+        self.game.enemy.on_objective_keypressed()
         # print("playerpos:" + str(self.pos[0]) + " " + str(self.pos[1]) +"   mousepos:" + str("(" + str(self.mousex) + "," + str(self.mousey) + ")") + "  camerapos: " + str(self.camera.camera.topleft))
 
     def debuggerPlayer(self):

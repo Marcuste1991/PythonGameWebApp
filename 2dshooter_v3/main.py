@@ -1,10 +1,9 @@
 # import section
-import sys
+import sys, datetime
 from os import path
 
 import pygame as pg
 from config import *
-from map import *
 from map import *
 from sprites.ActionArea import *
 from sprites.Background import *
@@ -28,6 +27,7 @@ class Game:
         pg.display.set_caption(TITLE + " | Version: " + VERSION)
         self.clock = pg.time.Clock()
         self.load_data()
+        self.Time_start = datetime.datetime.now()
 
     def load_data(self):
         game_folder = path.dirname(__file__)
