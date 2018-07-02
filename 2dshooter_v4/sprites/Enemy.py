@@ -12,6 +12,7 @@ from sprites.Player import *
 from sprites.ActionArea import *
 from math import *
 from sprites.EnemyBullet import *
+from prettytable import PrettyTable
 
 # definition section
 vec = pg.math.Vector2
@@ -96,8 +97,12 @@ class Enemy(pg.sprite.Sprite):
                         default="Username")
 
                     FinalTime = Time - self.game.Time_start
-                    with open("score.txt", "w") as f:
-                        f.write(str(PlayerName + " : " + str(FinalTime) + " : " + str(datetime.date.today())))
+                    with open("score.txt", "r+") as f:
+                        f.read()
+                        f.seek(0, 2)
+                        f.writelines(str(PlayerName + " | " + str(FinalTime) + " | " + str(datetime.date.today()) + "\n"))
+
+                        f.close()
 
                     self.exec = True
                     text_1 = 'All Enemies killed!'
@@ -105,6 +110,32 @@ class Enemy(pg.sprite.Sprite):
                     text = text_1 + ".." + text_2
                     self.game.a_area.event_display_text(text)
                     time.sleep(5)
+
+                    ####################################################################################################
+                    # Scoreboard output ### Pretty Tables hat auch ne SQLite Doku
+                    # --> http://zetcode.com/python/prettytable/ ### bissle nach unten scrollen
+                    data = self.game.a_area.score_board_data("score.txt")
+                    NameList = data[0]
+                    TimeList = data[1] #### Highscore relevant <- ordered by
+                    DateList = data[2]
+
+                    RowNum = len(NameList)
+                    x = PrettyTable()
+
+                    x.field_names = ["Name", "Time needed", "Date"]
+                    row = 0
+                    for row in range(RowNum):
+                        x.add_row([NameList[row], TimeList[row], DateList[row]])
+                        row += 1
+                    # debugger
+                    # print(NameList, TimeList, DateList)
+
+                    x.sortby = "Time needed" # ascending sort
+                    # table printer
+                    print(x)
+                    self.game.a_area.score_board_print(x, row)
+                    ####################################################################################################
+                    time.sleep(15) # 15 seconds Scoreboard Displaying
                     self.game.quit()
 
     def rotate(self):
