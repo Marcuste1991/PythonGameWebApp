@@ -92,18 +92,18 @@ class Enemy(pg.sprite.Sprite):
 
                     PlayerName = easygui.enterbox(
                         msg="Please enter your Name below: ",
-                        title="Nameinput  for Scoreboard!",
+                        title="Name input  for Scoreboard!",
                         strip=True,  # will remove whitespace around whatever the user types in
                         default="Username")
 
                     overTime = Time - self.game.Time_start
-                    # conv_time = datetime.datetime.strptime(overTime,"%H:%M:%S") ### @TODO Time Conversion into seconds
+                    convert_time = overTime.total_seconds()
 
                     with open("score.txt", "r+") as f:
                         f.read()
                         f.seek(0, 2)
                         f.writelines(
-                            str(PlayerName + " | " + str(overTime) + " | " + str(datetime.date.today()) + "\n"))
+                            str(PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today()) + "\n"))
 
                         f.close()
 
