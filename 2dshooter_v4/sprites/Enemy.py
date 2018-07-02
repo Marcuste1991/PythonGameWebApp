@@ -96,12 +96,14 @@ class Enemy(pg.sprite.Sprite):
                         strip=True,  # will remove whitespace around whatever the user types in
                         default="Username")
 
-                    FinalTime = Time - self.game.Time_start
+                    overTime = Time - self.game.Time_start
+                    # conv_time = datetime.datetime.strptime(overTime,"%H:%M:%S") ### @TODO Time Conversion into seconds
+
                     with open("score.txt", "r+") as f:
                         f.read()
                         f.seek(0, 2)
                         f.writelines(
-                            str(PlayerName + " | " + str(FinalTime) + " | " + str(datetime.date.today()) + "\n"))
+                            str(PlayerName + " | " + str(overTime) + " | " + str(datetime.date.today()) + "\n"))
 
                         f.close()
 

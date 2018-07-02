@@ -130,7 +130,7 @@ class ActionArea(pg.sprite.Sprite):
 
     def blit_text(self, text):
         pos = ((50), (50))
-        words = [word.split('\n') for word in text.splitlines()]  # 2D array where each row is a list of words.
+        words = [word.split('\n') for word in str(text).splitlines()]  # 2D array where each row is a list of words.
         space = self.Arial_font.size(' ')[0]  # width of spaces
         max_width, max_height = self.game.screen.get_size()
         x, y = pos
