@@ -100,7 +100,8 @@ class Enemy(pg.sprite.Sprite):
                     with open("score.txt", "r+") as f:
                         f.read()
                         f.seek(0, 2)
-                        f.writelines(str(PlayerName + " | " + str(FinalTime) + " | " + str(datetime.date.today()) + "\n"))
+                        f.writelines(
+                            str(PlayerName + " | " + str(FinalTime) + " | " + str(datetime.date.today()) + "\n"))
 
                         f.close()
 
@@ -116,7 +117,7 @@ class Enemy(pg.sprite.Sprite):
                     # --> http://zetcode.com/python/prettytable/ ### bissle nach unten scrollen
                     data = self.game.a_area.score_board_data("score.txt")
                     NameList = data[0]
-                    TimeList = data[1] #### Highscore relevant <- ordered by
+                    TimeList = data[1]  #### Highscore relevant <- ordered by
                     DateList = data[2]
 
                     RowNum = len(NameList)
@@ -130,12 +131,18 @@ class Enemy(pg.sprite.Sprite):
                     # debugger
                     # print(NameList, TimeList, DateList)
 
-                    x.sortby = "Time needed" # ascending sort
+                    # TABLE Properties
+                    x.sortby = "Time needed"  # ascending sort
+                    x.align["Name"] = "l"
+
                     # table printer
                     print(x)
                     self.game.a_area.score_board_print(x, row)
+                    with open("scoreboard.txt", "r+") as f:
+                        f.write(str(x))
+                        f.close()
                     ####################################################################################################
-                    time.sleep(15) # 15 seconds Scoreboard Displaying
+                    time.sleep(15)  # 15 seconds Scoreboard Displaying
                     self.game.quit()
 
     def rotate(self):

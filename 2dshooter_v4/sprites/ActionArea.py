@@ -50,7 +50,7 @@ class ActionArea(pg.sprite.Sprite):
         pg.mixer.Channel(2).play(sound)
 
     def text_objects(self, text, font):
-        grey = (211, 211, 211)
+        grey = (128, 0, 128)
         textSurface = font.render(text, True, grey)
         return textSurface, textSurface.get_rect()
 
@@ -118,9 +118,9 @@ class ActionArea(pg.sprite.Sprite):
         return name, time, date
 
     def score_board_print(self, table, rowNum):
-        self.game.screen.fill((255,255,255)) # White
+        self.game.screen.fill((255, 255, 255))  # White
         if rowNum > 10:
-            TableTxt = table.get_string(start=1, end=11)
+            TableTxt = table.get_string(start=0, end=11)
             self.blit_text(TableTxt)
             pg.display.update()
         else:
@@ -131,12 +131,12 @@ class ActionArea(pg.sprite.Sprite):
     def blit_text(self, text):
         pos = ((50), (50))
         words = [word.split('\n') for word in text.splitlines()]  # 2D array where each row is a list of words.
-        space = self.Arial_font.size(' ')[0] # width of spaces
+        space = self.Arial_font.size(' ')[0]  # width of spaces
         max_width, max_height = self.game.screen.get_size()
         x, y = pos
         for line in words:
             for word in line:
-                word_font = self.Font_With_Size(self.default_size - 23)
+                word_font = self.Font_With_Size(self.default_size - 28)
                 word_surface, WordRect = self.text_objects(word, word_font)
                 word_width, word_height = word_surface.get_size()
                 if x + word_width >= max_width:
