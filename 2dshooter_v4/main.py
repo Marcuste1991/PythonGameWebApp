@@ -21,7 +21,7 @@ from sprites.Bullet import *
 from sprites.Player import *
 from sprites.Enemy import *
 import pygame as pg
-
+from scores.HighscoreDAO import *
 from config import *
 import math
 from map import *
@@ -43,11 +43,12 @@ class Game:
         game_folder = path.dirname(__file__)
         self.img_folder = path.join(game_folder, 'img')
         self.sound_folder = path.join(game_folder, 'sounds')
-        self.map = Map(path.join(game_folder, 'mapfile.txt'))
+        self.map = Map(path.join(game_folder, 'mapfile2.txt'))
         self.player_img = pg.image.load(path.join(self.img_folder, PLAYER_IMG)).convert_alpha()
         self.player_img = pg.transform.scale(self.player_img, PLAYER_IMG_SIZE)
         self.enemy_img = pg.image.load(path.join(self.img_folder, ENEMY_IMG)).convert_alpha()
         self.enemy_img = pg.transform.scale(self.enemy_img, ENEMY_IMG_SIZE)
+        self.highscore_dao = HighscoreDAO()
 
         # load background fx
 

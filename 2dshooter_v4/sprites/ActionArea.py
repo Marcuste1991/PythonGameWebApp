@@ -102,18 +102,34 @@ class ActionArea(pg.sprite.Sprite):
         self.game.screen.blit(LifeSurf, LifeRect)
         pg.display.update()
 
-    def score_board_data(self, file):
+    # def score_board_data(self, file):
+    #     # read file
+    #     # TODO: DATENBANK AUSLESEN
+    #     name = []
+    #     time = []
+    #     date = []
+    #     with open(file, 'r+') as f:
+    #         data = f.readlines()
+    #         for line in data:
+    #             words = line.split("|")
+    #             name.append(words[0])
+    #             time.append(words[1])
+    #             date.append(words[2])
+    #
+    #     return name, time, date
+
+    def score_board_data(self):
         # read file
+        # TODO: DATENBANK AUSLESEN
         name = []
         time = []
         date = []
-        with open(file, 'r+') as f:
-            data = f.readlines()
-            for line in data:
-                words = line.split("|")
-                name.append(words[0])
-                time.append(words[1])
-                date.append(words[2])
+
+        data = self.game.highscore_dao.get_all_data()
+        for row in data:
+            name.append(row[0])
+            time.append(row[1])
+            date.append(row[2])
 
         return name, time, date
 

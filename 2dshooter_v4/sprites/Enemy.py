@@ -13,6 +13,7 @@ from sprites.ActionArea import *
 from math import *
 from sprites.EnemyBullet import *
 from prettytable import PrettyTable
+from scores import HighscoreDAO
 
 # definition section
 vec = pg.math.Vector2
@@ -105,20 +106,24 @@ class Enemy(pg.sprite.Sprite):
                     overTime = Time - self.game.Time_start
                     convert_time = overTime.total_seconds()
 
-                    if os.path.exists(self.score_switch("score.txt")) and os.path.getsize(self.score_switch("score.txt")):
-                        with open(self.score_switch("score.txt"), "r+") as f:
-                            f.read()
-                            f.seek(0, 2)
-                            f.writelines(
-                                str("\n" + PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today())))
-                        f.close()
-                    else:
-                        with open(self.score_switch("score.txt"), "r+") as f:
-                            f.read()
-                            f.seek(0, 2)
-                            f.writelines(
-                                str(PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today())))
-                        f.close()
+                    # if os.path.exists(self.score_switch("score.txt")) and os.path.getsize(self.score_switch("score.txt")):
+                    #     with open(self.score_switch("score.txt"), "r+") as f:
+                    #         f.read()
+                    #         f.seek(0, 2)
+                    #         f.writelines(
+                    #             str("\n" + PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today())))
+                    #     f.close()
+                    # else:
+                    #     with open(self.score_switch("score.txt"), "r+") as f:
+                    #         f.read()
+                    #         f.seek(0, 2)
+                    #         f.writelines(
+                    #             str(PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today())))
+                    #     f.close()
+
+                    if os.path.exists(self.score_switch("HighscoreDB.db")) and os.path.getsize(self.score_switch("HighscoreDB.db")):
+                        self.game.highscore_dao.insert(PlayerName,str(convert_time),str(datetime.date.today()))
+
 
                     self.exec = True
                     text_1 = 'All Enemies killed!'
@@ -130,7 +135,9 @@ class Enemy(pg.sprite.Sprite):
                     ####################################################################################################
                     # Scoreboard output ### Pretty Tables hat auch ne SQLite Doku
                     # --> http://zetcode.com/python/prettytable/ ### bissle nach unten scrollen
-                    data = self.game.a_area.score_board_data(self.score_switch("score.txt"))
+
+                    # data = self.game.a_area.score_board_data(self.score_switch("score.txt"))
+                    data = self.game.a_area.score_board_data()
                     NameList = data[0]
                     TimeList = data[1]  #### Highscore relevant <- ordered by
                     DateList = data[2]
@@ -154,7 +161,7 @@ class Enemy(pg.sprite.Sprite):
                     # print(x)
                     self.game.a_area.score_board_print(x, row)
 
-                    if os.path.exists(self.score_switch("scoreboard.txt")) and os.path.getsize(self.score_switch("score.txt")):
+                    if os.path.exists(self.score_switch("scoreboard.txt")) and os.path.getsize(self.score_switch("HighscoreDB.db")):
                         with open(self.score_switch("scoreboard.txt"), "r+") as f:
                             f.write(str(x))
                         f.close()
