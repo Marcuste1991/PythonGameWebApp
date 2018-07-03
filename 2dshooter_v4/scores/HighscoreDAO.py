@@ -4,7 +4,7 @@ class HighscoreDAO():
     def __init__(self):
         self.db = sqlite3.connect("scores/HighscoreDB.db")
         self.cursor = self.db.cursor()
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS users(name TEXT UNIQUE,zeit TEXT, datum TEXT)")
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS users(name TEXT, zeit TEXT, datum TEXT)")
 
     def insert(self,name,zeit,datum):
         self.cursor.execute('''INSERT INTO users(name, zeit, datum)

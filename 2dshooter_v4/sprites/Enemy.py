@@ -13,6 +13,7 @@ from sprites.ActionArea import *
 from math import *
 from sprites.EnemyBullet import *
 from prettytable import PrettyTable
+from timeunit import *
 from scores import HighscoreDAO
 
 # definition section
@@ -130,7 +131,9 @@ class Enemy(pg.sprite.Sprite):
                     text_2 = 'You win!'
                     text = text_1 + ".." + text_2
                     self.game.a_area.event_display_text(text)
-                    time.sleep(5)
+                    tm = TimeManager(5000)
+
+                    time.sleep(3)
 
                     ####################################################################################################
                     # Scoreboard output ### Pretty Tables hat auch ne SQLite Doku
@@ -166,7 +169,7 @@ class Enemy(pg.sprite.Sprite):
                             f.write(str(x))
                         f.close()
                     ####################################################################################################
-                    time.sleep(15)  # 15 seconds Scoreboard Displaying
+                    time.sleep(10)  # 15 seconds Scoreboard Displaying
                     self.game.quit()
 
     def rotate(self):
@@ -223,12 +226,13 @@ class Enemy(pg.sprite.Sprite):
     def update(self):
         self.hit_by_player()
         self.shoot()
+        self.rotate()
         # self.walk_through_map()
-        self.rect.center = self.pos
-
-        self.image = pg.transform.rotate(self.game.enemy_img, self.img_rot + self.rot)
-        self.rect = self.image.get_rect()
-        self.rect.center = self.pos
+        # self.rect.center = self.pos
+        #
+        # self.image = pg.transform.rotate(self.game.enemy_img, self.img_rot + self.rot)
+        # self.rect = self.image.get_rect()
+        # self.rect.center = self.pos
         # self.pos += self.vel * self.game.dt
         # self.hit_rect.centerx = self.pos.x
         # self.collide_with_walls('x')
