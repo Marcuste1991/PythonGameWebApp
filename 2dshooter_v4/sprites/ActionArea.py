@@ -104,7 +104,7 @@ class ActionArea(pg.sprite.Sprite):
 
     # def score_board_data(self, file):
     #     # read file
-    #     # TODO: DATENBANK AUSLESEN
+    #     # @ToDo: DATENBANK AUSLESEN
     #     name = []
     #     time = []
     #     date = []
@@ -119,8 +119,8 @@ class ActionArea(pg.sprite.Sprite):
     #     return name, time, date
 
     def score_board_data(self):
-        # read file
-        # TODO: DATENBANK AUSLESEN
+        # read database
+        # @ToDo: DATENBANK AUSLESEN
         name = []
         time = []
         date = []
@@ -128,7 +128,7 @@ class ActionArea(pg.sprite.Sprite):
         data = self.game.highscore_dao.get_all_data()
         for row in data:
             name.append(row[0])
-            time.append(row[1])
+            time.append(row[1] / 1000)
             date.append(row[2])
 
         return name, time, date

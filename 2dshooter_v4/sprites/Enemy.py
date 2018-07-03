@@ -105,8 +105,9 @@ class Enemy(pg.sprite.Sprite):
                         default="Username")
 
                     overTime = Time - self.game.Time_start
-                    convert_time = overTime.total_seconds()
-
+                    convert_fail_time = overTime.total_seconds() * 1000
+                    print(str(convert_fail_time).split('.', 1)[0])
+                    convert_time = str(convert_fail_time).split('.', 1)[0]
                     # if os.path.exists(self.score_switch("score.txt")) and os.path.getsize(self.score_switch("score.txt")):
                     #     with open(self.score_switch("score.txt"), "r+") as f:
                     #         f.read()
@@ -148,7 +149,7 @@ class Enemy(pg.sprite.Sprite):
                     RowNum = len(NameList)
                     x = PrettyTable()
 
-                    x.field_names = ["Name", "Time needed", "Date"]
+                    x.field_names = ["Playername", "Time needed (Sec)", "Date of Play"]
                     row = 0
                     for row in range(RowNum):
                         x.add_row([NameList[row], TimeList[row], DateList[row]])
@@ -157,8 +158,8 @@ class Enemy(pg.sprite.Sprite):
                     # print(NameList, TimeList, DateList)
 
                     # TABLE Properties
-                    x.sortby = "Time needed"  # ascending sort
-                    x.align["Name"] = "l"
+                    x.sortby = "Time needed (Sec)"  # ascending sort
+                    x.align["Playername"] = "l"
 
                     # table printer
                     # print(x)
