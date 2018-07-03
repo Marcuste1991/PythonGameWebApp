@@ -6,7 +6,7 @@ from sprites.Wall import *
 from sprites.Bullet import *
 from config import *
 import pygame as pg
-import math
+import math, time
 
 # definition section
 vec = pg.math.Vector2
@@ -118,7 +118,13 @@ class Player(pg.sprite.Sprite):
                 self.game.player.kill()
                 self.game.player_dead = True
                 self.game.enemy.player_kills += 1
-                print("Got killed by bots. ---> Game Over!")
+
+                self.exec = True
+                text_1 = 'Got killed by bots!'
+                text_2 = '---> Game Over!'
+                text = text_1 + ".." + text_2
+                self.game.a_area.event_display_text(text)
+                time.sleep(5)
                 # self.game.quit()
 
     def update(self):

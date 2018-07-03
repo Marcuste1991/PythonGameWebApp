@@ -1,6 +1,6 @@
 # packet import section
 
-import time, datetime, random
+import time, datetime, os
 import easygui  # easy_install easygui !!! important for Username input !!!!!!
 import pygame as pg
 # defined import section
@@ -72,6 +72,12 @@ class Enemy(pg.sprite.Sprite):
             self.game.a_area.objective_text(objective[0], height[0])
             self.game.a_area.objective_text(objective[1], height[1])
 
+    # os path to scorefiles
+    def score_switch(self, file):
+        score_file = os.path.abspath("scores/" + file)
+
+        return score_file
+
     def hit_by_player(self):
         E_hits = pg.sprite.spritecollide(self, self.game.bullets, False)
 
@@ -99,12 +105,19 @@ class Enemy(pg.sprite.Sprite):
                     overTime = Time - self.game.Time_start
                     convert_time = overTime.total_seconds()
 
-                    with open("score.txt", "r+") as f:
-                        f.read()
-                        f.seek(0, 2)
-                        f.writelines(
-                            str(PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today()) + "\n"))
-
+                    if os.path.exists(self.score_switch("score.txt")) and os.path.getsize(self.score_switch("score.txt")):
+                        with open(self.score_switch("score.txt"), "r+") as f:
+                            f.read()
+                            f.seek(0, 2)
+                            f.writelines(
+                                str("\n" + PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today())))
+                        f.close()
+                    else:
+                        with open(self.score_switch("score.txt"), "r+") as f:
+                            f.read()
+                            f.seek(0, 2)
+                            f.writelines(
+                                str(PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today())))
                         f.close()
 
                     self.exec = True
@@ -117,7 +130,7 @@ class Enemy(pg.sprite.Sprite):
                     ####################################################################################################
                     # Scoreboard output ### Pretty Tables hat auch ne SQLite Doku
                     # --> http://zetcode.com/python/prettytable/ ### bissle nach unten scrollen
-                    data = self.game.a_area.score_board_data("score.txt")
+                    data = self.game.a_area.score_board_data(self.score_switch("score.txt"))
                     NameList = data[0]
                     TimeList = data[1]  #### Highscore relevant <- ordered by
                     DateList = data[2]
@@ -138,10 +151,12 @@ class Enemy(pg.sprite.Sprite):
                     x.align["Name"] = "l"
 
                     # table printer
-                    print(x)
+                    # print(x)
                     self.game.a_area.score_board_print(x, row)
-                    with open("scoreboard.txt", "r+") as f:
-                        f.write(str(x))
+
+                    if os.path.exists(self.score_switch("scoreboard.txt")) and os.path.getsize(self.score_switch("score.txt")):
+                        with open(self.score_switch("scoreboard.txt"), "r+") as f:
+                            f.write(str(x))
                         f.close()
                     ####################################################################################################
                     time.sleep(15)  # 15 seconds Scoreboard Displaying

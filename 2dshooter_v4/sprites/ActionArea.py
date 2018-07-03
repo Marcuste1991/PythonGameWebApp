@@ -26,7 +26,7 @@ class ActionArea(pg.sprite.Sprite):
         self.default_size = 50
 
     def Font_With_Size(self, size):
-        self.Arial_font = pg.font.SysFont('Arial', size)
+        self.Arial_font = pg.font.SysFont('Tahoma', size)
 
         return self.Arial_font
 
