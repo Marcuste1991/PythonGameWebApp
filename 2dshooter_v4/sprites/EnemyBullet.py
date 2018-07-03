@@ -17,8 +17,8 @@ class EnemyBullet(pg.sprite.Sprite):
         self.game = game
         self.image = pg.Surface((7, 3), pg.SRCALPHA)
         self.image.fill(RED)
-        self.velocity = (math.cos(math.radians(enemy.img_rot)) * ENEMY_BULLET_SPEED + randrange(-2,2),
-                         -math.sin(math.radians(enemy.img_rot)) * ENEMY_BULLET_SPEED + randrange(-2,2))
+        self.velocity = (math.cos(math.radians(enemy.img_rot)) * ENEMY_BULLET_SPEED + randrange(-1,1),
+                         -math.sin(math.radians(enemy.img_rot)) * ENEMY_BULLET_SPEED + randrange(-1,1))
         self.image = pg.transform.rotate(self.image, (enemy.img_rot))
         self.rect = self.image.get_rect(center=(enemy.pos.x, enemy.pos.y))
         self.pos = list(self.rect.center)
