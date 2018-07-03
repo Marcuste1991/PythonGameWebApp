@@ -1,5 +1,9 @@
 Semesterprojekt Pygame von Christopher Hübner und Allan Fodi
+Allan Fodi:             20204183
+Christopher Hübner:     20201227
+
 Link zum Sourcecode: https://github.com/Marcuste1991/PythonGameWebApp/tree/master/2dshooter_v4
+
 Name des Spiels: Hunting Terrorist
 
 Infos zur Dateistruktur:
