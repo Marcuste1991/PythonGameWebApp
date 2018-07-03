@@ -12,7 +12,7 @@ from sprites.Player import *
 from sprites.ActionArea import *
 from math import *
 from sprites.EnemyBullet import *
-from prettytable import PrettyTable
+from prettytable import PrettyTable, FRAME, ALL
 from timeunit import *
 from scores import HighscoreDAO
 
@@ -123,9 +123,9 @@ class Enemy(pg.sprite.Sprite):
                     #             str(PlayerName + " | " + str(convert_time) + " | " + str(datetime.date.today())))
                     #     f.close()
 
-                    if os.path.exists(self.score_switch("HighscoreDB.db")) and os.path.getsize(self.score_switch("HighscoreDB.db")):
-                        self.game.highscore_dao.insert(PlayerName,str(convert_time),str(datetime.date.today()))
-
+                    if os.path.exists(self.score_switch("HighscoreDB.db")) and os.path.getsize(
+                            self.score_switch("HighscoreDB.db")):
+                        self.game.highscore_dao.insert(PlayerName, str(convert_time), str(datetime.date.today()))
 
                     self.exec = True
                     text_1 = 'All Enemies killed!'
@@ -147,9 +147,9 @@ class Enemy(pg.sprite.Sprite):
                     DateList = data[2]
 
                     RowNum = len(NameList)
-                    x = PrettyTable()
+                    x = PrettyTable(border=True, header=True, hrules=FRAME, vrules=FRAME, padding_width=5)
 
-                    x.field_names = ["Playername", "Time needed (Sec)", "Date of Play"]
+                    x.field_names = ["         Playername         ", "Time needed (Sec)", "Date of Play"]
                     row = 0
                     for row in range(RowNum):
                         x.add_row([NameList[row], TimeList[row], DateList[row]])
@@ -158,14 +158,15 @@ class Enemy(pg.sprite.Sprite):
                     # print(NameList, TimeList, DateList)
 
                     # TABLE Properties
-                    x.sortby = "Time needed (Sec)"  # ascending sort
-                    x.align["Playername"] = "l"
+                    x.sortby = x.field_names[1]  # ascending sort
+                    x.align[x.field_names[0]]="l"
 
                     # table printer
                     # print(x)
                     self.game.a_area.score_board_print(x, row)
 
-                    if os.path.exists(self.score_switch("scoreboard.txt")) and os.path.getsize(self.score_switch("HighscoreDB.db")):
+                    if os.path.exists(self.score_switch("scoreboard.txt")) and os.path.getsize(
+                            self.score_switch("HighscoreDB.db")):
                         with open(self.score_switch("scoreboard.txt"), "r+") as f:
                             f.write(str(x))
                         f.close()
