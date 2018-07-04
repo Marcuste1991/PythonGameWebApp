@@ -20,6 +20,11 @@ Infos zur Dateistruktur:
 Ziel des Spiels:
 Ziel ist es alle Gegner zu eliminieren und mögliche Hindernisse zu bewältigen (Gate öffnen).
 
+Steuerung:
+Linke Maustaste = Schiessen
+W,A,S,D = Oben,Links,Unten,Rechts (bewegen)
+O = Objectives
+
 HowTo Map:
 Die Map funktioniert ganz einfach. Gespeichert werden die Mapdaten in einer Textdatei, bei der folgende Zeichen
 bedeutend sind:
